@@ -24,7 +24,7 @@ func main() {
 
 		// Convert the number from string form into integer.
 		num, err := strconv.Atoi(numValues[0])
-		if !ok {
+		if err != nil {
 			fmt.Fprintf(w, "%v", err)
 			return
 		}
