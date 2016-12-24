@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -18,14 +17,14 @@ func main() {
 		// Get the number parameter we are looking for.
 		numValues, ok := queryParameters["number"]
 		if !ok {
-			fmt.Fprintf(w, "%s", "No number provided")
+			http.Error(w, "No number provided", http.StatusBadRequest)
 			return
 		}
 
 		// Convert the number from string form into integer.
 		num, err := strconv.Atoi(numValues[0])
 		if err != nil {
-			fmt.Fprintf(w, "%v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -34,7 +33,7 @@ func main() {
 
 		// Print new number to console and send it back to requester.
 		log.Println(num)
-		fmt.Fprintf(w, "%v", num)
+		w.Write([]byte(strconv.Itoa(num)))
 	}
 	http.HandleFunc("/changenumber", doServerStuff) // Run this function when this URL path is hit.
 
